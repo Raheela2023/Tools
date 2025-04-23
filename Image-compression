@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Free online image compressor tool. Optimize your images by selecting compression level. Fully responsive and SEO-optimized.">
+  <meta name="keywords" content="image compressor, image optimization, compress jpg, compress png, online image tool">
+  <meta name="author" content="Your Name">
+  <title>Online Image Compressor Tool</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    header {
+      background: #007bff;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    main {
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    input[type="file"] {
+      margin-bottom: 1rem;
+    }
+    .output {
+      margin-top: 1rem;
+    }
+    .ads {
+      margin: 2rem 0;
+      text-align: center;
+    }
+    .responsive-img {
+      max-width: 100%;
+      height: auto;
+    }
+    @media (max-width: 600px) {
+      main {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Image Compression Tool</h1>
+  </header>
+  <main>
+    <h2>Compress Your Image</h2>
+    <p>Select an image and choose the compression level to reduce its size.</p>
+    <input type="file" id="imageInput" accept="image/*" />
+    <label for="compressionLevel">Compression Level (%):</label>
+    <input type="range" id="compressionLevel" min="10" max="90" step="10" value="70" />
+    <span id="compressionValue">70%</span>
+    <button onclick="compressImage()">Compress</button>
+
+    <div class="output">
+      <h3>Compressed Image:</h3>
+      <canvas id="canvas" style="display: none;"></canvas>
+      <img id="compressedImage" class="responsive-img" alt="Compressed result will appear here" />
+    </div>
+
+    <div class="ads">
+      <!-- Google AdSense Code -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="1234567890"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </main>
+
+  <script>
+    const compressionSlider = document.getElementById('compressionLevel');
+    const compressionValue = document.getElementById('compressionValue');
+
+    compressionSlider.addEventListener('input', () => {
+      compressionValue.textContent = compressionSlider.value + '%';
+    });
+
+    function compressImage() {
+      const file = document.getElementById('imageInput').files[0];
+      if (!file) return alert('Please upload an image file.');
+
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const img = new Image();
+        img.src = event.target.result;
+
+        img.onload = function () {
+          const canvas = document.getElementById('canvas');
+          const ctx = canvas.getContext('2d');
+
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx.drawImage(img, 0, 0);
+
+          const compression = parseInt(compressionSlider.value) / 100;
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', compression);
+
+          document.getElementById('compressedImage').src = compressedDataUrl;
+          canvas.style.display = 'none';
+        };
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+</body>
+</html>
